@@ -12,3 +12,10 @@ add_executable(writingSpeedTest
 )
 
 target_include_directories(writingSpeedTest PRIVATE WST)
+
+# Копируем директорию со словарями в папку со сборкой
+add_custom_command(TARGET writingSpeedTest POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/WST/dictionaries"
+    "$<TARGET_FILE_DIR:writingSpeedTest>/dictionaries"
+)

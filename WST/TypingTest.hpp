@@ -3,6 +3,7 @@
 #include <chrono>
 #include "TerminalManager.hpp"
 #include "WordGenerator.hpp"
+#include "Difficulty.hpp"
 
 class TypingTest {
 private:
@@ -15,10 +16,12 @@ private:
 
     void runInput();
     void countMistakes();
-    void displayChar(char c, bool is_correct) const;
+    // Возвращаем простую сигнатуру
+    static void displayChar(char c, bool is_correct);
 
 public:
-    TypingTest(const std::vector<std::string>& words);
+    // Убираем язык из конструктора
+    TypingTest(Difficulty difficulty);
 
     void start(int word_count);
     void displayResults() const;
