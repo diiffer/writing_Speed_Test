@@ -1,34 +1,31 @@
 #pragma once
 #include <string>
-#include <chrono>
-#include "TerminalManager.hpp"
+#include <vector>
 #include "WordGenerator.hpp"
 #include "Difficulty.hpp"
 
+struct TestState {
+    int mistakes;
+    bool is_finished;
+    std::string reference;
+    std::string current_input;
+    std::vector<bool> correctness; // true if character at index is correct
+};
+
 class TypingTest {
 private:
-    TerminalManager terminal_;
     WordGenerator generator_;
     std::string reference_;
     std::string input_;
-    double duration_;
-    int mistakes_;
-
-    void runInput();
-    void countMistakes();
-    // Возвращаем простую сигнатуру
-    static void displayChar(char c, bool is_correct);
+    int mistakes_ = 0;
 
 public:
-    // Убираем язык из конструктора
-    TypingTest(Difficulty difficulty);
+    explicit TypingTest(Difficulty difficulty);
 
     void start(int word_count);
-    void displayResults() const;
+    TestState update(const std::string& current_input);
 
-    // Геттеры для тестирования
     const std::string& getReference() const { return reference_; }
     const std::string& getInput() const { return input_; }
-    double getDuration() const { return duration_; }
     int getMistakes() const { return mistakes_; }
 };

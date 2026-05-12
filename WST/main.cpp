@@ -1,42 +1,62 @@
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include <GLFW/glfw3.h>
+#include "GuiManager.hpp"
 #include <iostream>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
-#include "TypingTest.hpp"
-#include "Difficulty.hpp"
 
 int main() {
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    // Initialize GLFW
+    if (!glfwInit()) return 1;
 
-    std::cout << "Select difficulty level:" << std::endl;
-    std::cout << "1. Easy" << std::endl;
-    std::cout << "2. Medium" << std::endl;
-    std::cout << "3. Hard" << std::endl;
+    // Set OpenGL version to 3.2 Core Profile for macOS compatibility
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    int choice;
-    std::cin >> choice;
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Writing Speed Test", nullptr, nullptr);
+    if (!window) return 1;
 
-    Difficulty difficulty;
-    switch (choice) {
-        case 1:
-            difficulty = Difficulty::Easy;
-            break;
-        case 2:
-            difficulty = Difficulty::Medium;
-            break;
-        case 3:
-            difficulty = Difficulty::Hard;
-            break;
-        default:
-            std::cout << "Invalid choice. Defaulting to Medium." << std::endl;
-            difficulty = Difficulty::Medium;
-            break;
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(window, &glfwGetProcAddress);
+    ImGui_ImplOpenGL3_Init("#version 150");
+
+    GuiManager gui;
+
+    while (!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        gui.render();
+
+        ImGui::Render();
+        int display_w, display_h;
+        glfwGetFramebufferSize(window, &display_w, &display_h);
+        glViewport(0, 0, display_w, display_h);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        glfwSwapBuffers(window);
     }
 
-    // Создаём и запускаем тест
-    TypingTest test(difficulty);
-    test.start(10); // 10 слов в тесте
-    test.displayResults();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
 
     return 0;
 }
