@@ -1,42 +1,60 @@
-# ⌨️ Writing Speed Test (MGTU Bauman Edition)
+# ⌨️ Writing Speed Test (BMSTU Edition)
 
-A high-performance typing speed measurement application developed as part of a first-year programming project.
+Высокопроизводительное приложение для измерения скорости печати, разработанное в рамках курсового проекта по программированию.
 
-## 🚀 Features
-- **Real-time Tracking:** Monitors your keystrokes and calculates speed on the fly.
-- **Dynamic Difficulty:** Choose between Easy, Medium, and Hard levels to challenge yourself.
-- **Beautiful GUI:** Implemented with Dear ImGui for a professional-grade interface.
-- **Accurate Metrics:** Calculates WPM (Words Per Minute) and tracks total mistakes.
+## 🚀 Возможности
+- **Отслеживание в реальном времени:** Мгновенное отображение правильности ввода каждой буквы.
+- **Динамическая сложность:** Выбор между легким, средним и сложным уровнями.
+- **Графический интерфейс:** Реализован с помощью Dear ImGui для удобного взаимодействия.
+- **Точные метрики:** Подсчет количества ошибок и затраченного времени.
 
-## 🛠 Tech Stack
+## 🛠 Технологический стек
 - **Core Logic:** C++17
 - **GUI Framework:** [Dear ImGui](https://github.com/ocornut/imgui)
 - **Window Management:** [GLFW](https://www.glfw.org/)
-- **Rendering:** OpenGL 3.3
+- **Rendering:** OpenGL 3.2
 
-## 📦 Installation & Setup
+## 📦 Установка и сборка
 
-### Prerequisites
-You need to have `brew` installed on your macOS.
+### Для macOS
+
+#### Необходимые компоненты
+Вам понадобится менеджер пакетов **Homebrew**.
 ```bash
 brew install glfw
 ```
 
-### Building the Project
-The project uses a compilation process that links the GUI libraries. Since this is a GUI app, you can no longer use a simple `g++` command without linking OpenGL and GLFW.
-
-**Recommended build command:**
+#### Сборка проекта
+**Рекомендуемая команда для сборки:**
 ```bash
 g++ -std=c++17 WST/*.cpp -lglfw -lGL -lGLU -framework OpenGL -framework Cocoa -framework IOKit -o typing_test
 ```
-*(Note: Exact flags may vary based on your system configuration).*
-
-## 🎮 How to Use
-1. Run the compiled binary: `./typing_test`
-2. Select your desired difficulty and the number of words.
-3. Click **"Start Test"**.
-4. Type the reference text as accurately and quickly as you can.
-5. See your final WPM and mistake count!
+*(Примечание: флаги могут отличаться в зависимости от конфигурации вашей системы).*
 
 ---
-Made with ❤️ by students of MGTU im. Bauman.
+
+### Для Windows
+
+#### Необходимые компоненты
+1.  **MinGW-w64:** Установите компилятор C++, например, через [MSYS2](https://www.msys2.org/). После установки выполните `pacman -S mingw-w64-x86_64-gcc`.
+2.  **GLFW:** Скачайте [скомпилированные бинарные файлы](https://www.glfw.org/download.html) для вашей архитектуры (32-bit или 64-bit).
+
+#### Сборка проекта
+Поместите заголовочные файлы (`.h`) из GLFW в папку `include` вашего компилятора (например, `C:\msys64\mingw64\include`), а файлы библиотек (`.lib` или `.a`) — в папку `lib` (например, `C:\msys64\mingw64\lib`).
+
+**Примерная команда для сборки:**
+```bash
+g++ -std=c++17 WST/*.cpp -o typing_test -lglfw3 -lopengl32 -lgdi32
+```
+*(Примечание: вам может понадобиться указать пути к библиотекам явно через флаги `-I` и `-L`, если они не находятся в стандартных путях поиска компилятора).*
+
+## 🎮 Как использовать
+1.  **Скомпилируйте проект** для вашей ОС.
+2.  **Запустите исполняемый файл:** `./typing_test` (на macOS) или `typing_test.exe` (на Windows).
+3.  Выберите желаемый уровень сложности.
+4.  Нажмите **"Начать тест"**.
+5.  Начинайте печатать предложенный текст.
+6.  По завершении вы увидите ваши результаты.
+
+---
+Сделано с ❤️ студентами МГТУ им. Н.Э. Баумана.
