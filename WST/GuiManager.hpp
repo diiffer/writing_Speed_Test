@@ -17,6 +17,8 @@ private:
     Difficulty current_difficulty_ = Difficulty::Medium;
     int word_count_ = 10;
 
+    int calculateScore(float wpm);
+
 public:
     GuiManager() = default;
     ~GuiManager() { delete test_; }
